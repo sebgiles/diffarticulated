@@ -53,8 +53,13 @@ SUBDIRS(../third_party/tinyxml2)
 
 
 set(MESHCAT_LIBRARIES zmq crossguid uuid  cpp_base64  LinearMath
-            OpenGLWindow  gwen BussIK  pthread)
+            # OpenGLWindow  gwen BussIK  
+            pthread)
 IF(WIN32)
     set(MESHCAT_LIBRARIES ${MESHCAT_LIBRARIES} ws2_32 Winmm iphlpapi)
 ENDIF()
 set(HAS_MESHCAT TRUE)
+
+message ("anymal.cpp")
+add_executable(anymal_tiny anymal.cpp  ${TDS_HDRS})
+target_link_libraries(anymal_tiny  tinyxml2 ${MESHCAT_LIBRARIES})

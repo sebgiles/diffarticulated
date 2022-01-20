@@ -125,3 +125,4 @@ vendor/*
 
 .mujoco/
 .vscode/
+release/
