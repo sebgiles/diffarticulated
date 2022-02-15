@@ -626,6 +626,12 @@ PYBIND11_MODULE(pydiffarti, m) {
                      &TinyContactPoint<Scalar, Utils>::m_world_point_on_b)
       .def_readwrite("distance",
                      &TinyContactPoint<Scalar, Utils>::m_distance);
+      // .def_readwrite("normal_force",
+      //                &TinyContactPoint<Scalar, Utils>::normal_force)
+      // .def_readwrite("lateral_friction_force_1",
+      //                &TinyContactPoint<Scalar, Utils>::lateral_friction_force_1)
+      // .def_readwrite("lateral_friction_force_2",
+      //                &TinyContactPoint<Scalar, Utils>::lateral_friction_force_2);
 
   py::class_<TinyContactPointRigidBody<Scalar, Utils>>(
       m, "TinyContactPointRigidBody", contact)
@@ -745,6 +751,8 @@ PYBIND11_MODULE(pydiffarti, m) {
                      &TinyWorld<Scalar, Utils>::dt)
       .def_readwrite("m_multi_bodies",
                      &TinyWorld<Scalar, Utils>::m_multi_bodies, py::return_value_policy::reference);
+      // .def_readwrite("contacts",
+      //                &TinyWorld<Scalar, Utils>::m_allMultiBodyContacts, py::return_value_policy::reference);
 
   py::class_<TinyRaycastResult<Scalar, Utils>>(m, "TinyRaycastResult")
       .def(py::init<>())

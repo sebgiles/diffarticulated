@@ -398,47 +398,60 @@ int main(){
     int dof_u = 12;
 
     world.adj_initialize(TinyVector3<Scalar, Utils>(0,0,g), n_step, dof_u);
+    // vector<Scalar> q(19, 0.0), qd(18, 0.0), tau(12, 0.0);
+    // q[3] = 1.0;
+    // q[6] = 0.60;
+    // auto fwd = forward_step(q, qd, tau, world);
+    // for (auto x: fwd){
+    //     for (auto y: x){
+    //         std::cout << y << ", ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+    // std::cout << std::endl;
+    vector<Scalar> dldq(19, 0.0), dldqd(18, 0.0);
+
+
+    #define N_RUNS 10000
+
+    // q[3] = 1.0;
+    // q[6] = 0.60;
+    // auto fwd = forward_step(q, qd, tau, world);   
+    // dldq[6] = 1.0;
+    // auto ans = backward_step(q, qd, tau, dldq, dldqd, world);
+    // dldq[6] = 0.0;
+
+    std::clock_t c_start = std::clock();
     vector<Scalar> q(19, 0.0), qd(18, 0.0), tau(12, 0.0);
     q[3] = 1.0;
-    q[6] = 0.60;
-    auto fwd = forward_step(q, qd, tau, world);
-    for (auto x: fwd){
-        for (auto y: x){
-            std::cout << y << ", ";
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
-    vector<Scalar> dldq(19, 0.0), dldqd(18, 0.0);
-    dldq[6] = 1.0;
-
-    auto ans = backward_step(q, qd, tau, dldq, dldqd, world);
-
-    #define N_RUNS 100
-    std::clock_t c_start = std::clock();
-    
+    q[6] = 0.55; // 0.65
+    auto fwd = forward_step(q, qd, tau, world);   
     for (int i = 0; i<N_RUNS; i++){
-      ans = backward_step(q, qd, tau, dldq, dldqd, world);
+      dldqd[i % 18] = 1.0;
+      auto ans = backward_step(q, qd, tau, dldq, dldqd, world);
+      dldqd[i % 18] = 0.0;
     }
+
     std::clock_t c_end = std::clock();
 
-
-    for (int i=0; i<q.size(); i++){
-        ans[0][i] = (ans[0][i] - dldq[i]) / dt;
-    }
-    for (int i=0; i<qd.size(); i++){
-        ans[1][i] = (ans[1][i] - dldqd[i]) / dt;
-    }
-    for (auto x: ans){
-        for (auto y: x){
-            std::cout << y << ", ";
-        }
-        std::cout << std::endl;
-    }
 
     double time_elapsed_ms = 1000.0 * (c_end-c_start) / CLOCKS_PER_SEC / N_RUNS;
     std::cout << "CPU time used: " << time_elapsed_ms << " ms\n";
     std::cout << "CPU time used: " << c_end-c_start << " clocks\n";
+    std::cout << std::endl;
+    // for (int i=0; i<q.size(); i++){
+    //     ans[0][i] = (ans[0][i] - dldq[i]) / dt;
+    // }
+    // for (int i=0; i<qd.size(); i++){
+    //     ans[1][i] = (ans[1][i] - dldqd[i]) / dt;
+    // }
+    // for (auto x: ans){
+    //     for (auto y: x){
+    //         std::cout << y << ", ";
+    //     }
+    //     std::cout << std::endl;
+    // }
+
 
     // std::cout << ans[0][0];
 

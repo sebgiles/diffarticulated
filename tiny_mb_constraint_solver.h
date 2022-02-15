@@ -663,6 +663,14 @@ struct TinyMultiBodyConstraintSolver {
       mb_b->submitProfileTiming("");
     }
 
+    // // Save forces in contact points
+    // for (int i = 0; i < n_c; ++i) {
+    //   TinyContactPoint& cp = cps[i];
+    //   cp.normal_force = lcp_p[i]/dt;
+    //   cp.lateral_friction_force_1 = lcp_p[n_c + i]/dt;
+    //   cp.lateral_friction_force_2 = lcp_p[2 * n_c + i]/dt;
+    // }
+
     // start adjoint
     // -------------------------------------------------
     Rjac_con.set_zero();

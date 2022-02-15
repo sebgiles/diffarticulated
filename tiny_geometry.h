@@ -154,6 +154,9 @@ struct TinyContactPoint {
   TinyVector3<TinyScalar, TinyConstants> m_world_point_on_b,
                                           adjm_Rworld_point_on_b;
   TinyScalar m_distance, adjm_Rdistance;
+  // TinyScalar normal_force;
+  // TinyScalar lateral_friction_force_1;
+  // TinyScalar lateral_friction_force_2;  
 };
 
 template <typename TinyScalar, typename TinyConstants>
